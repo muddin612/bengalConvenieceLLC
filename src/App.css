@@ -1,0 +1,20 @@
+/* div {
+  outline: 2px dashed rgba(254, 2, 2, 0.676);
+} */
+.layout {
+  display: grid;
+  min-height: 100vh;
+  grid-template-rows: auto 1fr auto;
+}
+
+main {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Ensure Header stays on top */
+header {
+  background: white;
+}

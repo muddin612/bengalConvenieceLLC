@@ -1,0 +1,20 @@
+.card {
+  transition: all 0.3s ease;
+  background-color: rgba(248, 249, 250, 0.9);
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+address {
+  font-style: normal;
+}
+
+.lucide {
+  stroke-width: 1.5;
+}
+
+.card-title .lucide {
+  vertical-align: text-bottom;
+}
