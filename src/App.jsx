@@ -92,7 +92,7 @@ function AnimatedRoutes() {
               }
             />
             <Route
-              path="/category/:categoryName"
+              path="/category/:categoryName/*"
               element={
                 <motion.div
                   variants={pageVariants}
