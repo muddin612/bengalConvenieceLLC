@@ -3,7 +3,6 @@ import { Container, Button, Row, Col, Card } from "react-bootstrap";
 
 import uberEatsLogo from "../assets/Uber-Eats.png";
 import grubHubLogo from "../assets/Grubhub-Logo.png";
-import doorDashLogo from "../assets/doordashLogo.png";
 
 export default function Delivery() {
   const [hoveredService, setHoveredService] = useState(null);

@@ -12,7 +12,7 @@ export default function Home() {
         <Card.Body className="text-center py-5">
           {/* Phone Number */}
           <a
-            href="tel:8624021974"
+            href="tel:8624021248"
             className="h2 d-block mb-4 text-decoration-none text-primary fw-bold"
           >
             <Phone className="me-2" strokeWidth={1.5} />
@@ -23,7 +23,7 @@ export default function Home() {
           <div className="d-flex justify-content-center gap-3 mb-4">
             <Button
               variant="success"
-              href="tel:8624021974"
+              href="tel:8624021248"
               className="px-4 py-2"
               size="lg"
             >

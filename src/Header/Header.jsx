@@ -5,8 +5,7 @@ import logo from "../assets/bengalLogo.png";
 import CustomNavigation from "./CustomNavigation";
 import SearchBar from "./SearchBar";
 
-export default function Header() {
-  // Inline styles object for components that need custom styling
+export default function Header({ onSearchTrigger }) {
   const styles = {
     searchInput: {
       backgroundColor: "#333",
@@ -21,11 +20,16 @@ export default function Header() {
     },
   };
 
-  // State to control navbar toggle
+  // Default state is now false (collapsed)
   const [expanded, setExpanded] = useState(false);
 
   const handleNavClick = () => {
     setExpanded(false);
+  };
+
+  const handleSearchTrigger = () => {
+    setExpanded(false);
+    onSearchTrigger && onSearchTrigger();
   };
 
   return (
@@ -38,7 +42,6 @@ export default function Header() {
       expanded={expanded}
     >
       <Container>
-        {/* Logo and Brand Name */}
         <Navbar.Brand href="/" className="d-flex align-items-center">
           <img
             src={logo}
@@ -51,19 +54,19 @@ export default function Header() {
           </small>
         </Navbar.Brand>
 
-        {/* Hamburger Menu */}
         <Navbar.Toggle
           aria-controls="basic-navbar-nav"
           onClick={() => setExpanded(!expanded)}
         />
 
-        {/* Collapsible Content */}
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto" onClick={handleNavClick}>
             <CustomNavigation />
           </Nav>
-          {/* Search Form */}
-          <SearchBar />
+          <SearchBar
+            onSearchTrigger={handleSearchTrigger}
+            onCollapseToggle={setExpanded}
+          />
         </Navbar.Collapse>
       </Container>
     </Navbar>

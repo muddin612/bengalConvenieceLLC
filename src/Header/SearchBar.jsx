@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
 import { Form, FormControl, Button, ListGroup } from "react-bootstrap";
-import SearchProduct from "../Pages/searchProduct";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../DB/supabaseClient";
 import "../Components/CSS/SearchBar.css";
 
-export default function SearchBar() {
+export default function SearchBar({ onSearchTrigger, onCollapseToggle }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -56,13 +55,32 @@ export default function SearchBar() {
     e.preventDefault();
     const trimmedSearchTerm = searchTerm.trim();
     if (trimmedSearchTerm) {
+      // Collapse navbar
+      onCollapseToggle && onCollapseToggle(false);
+
+      // Trigger any additional search actions
+      onSearchTrigger && onSearchTrigger();
+
+      // Hide suggestions
+      setShowSuggestions(false);
+
+      // Navigate to search page
       navigate(`/search?query=${encodeURIComponent(trimmedSearchTerm)}`);
     }
   };
 
   const handleSuggestionClick = (suggestion) => {
+    // Collapse navbar
+    onCollapseToggle && onCollapseToggle(false);
+
+    // Trigger any additional search actions
+    onSearchTrigger && onSearchTrigger();
+
     setSearchTerm(suggestion);
     setShowSuggestions(false);
+
+    // Navigate to search page with suggestion
+    navigate(`/search?query=${encodeURIComponent(suggestion)}`);
   };
 
   return (
@@ -79,6 +97,15 @@ export default function SearchBar() {
             setShowSuggestions(true);
           }}
           onFocus={() => setShowSuggestions(true)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              // Collapse navbar on Enter
+              onCollapseToggle && onCollapseToggle(false);
+            }
+          }}
+          onBlur={() => {
+            setTimeout(() => setShowSuggestions(false), 200);
+          }}
         />
         <Button
           variant="outline-light"

@@ -7,6 +7,7 @@ import {
   useLocation,
 } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
+import { useState } from "react";
 import Home from "./Home";
 import NotFound from "./Pages/NotFound";
 import About from "./Pages/About";
@@ -31,11 +32,21 @@ const pageVariants = {
 
 function AnimatedRoutes() {
   const location = useLocation();
+  const [headerExpanded, setHeaderExpanded] = useState(true);
+
+  const handleSearchTrigger = () => {
+    // Any additional actions when search is triggered
+  };
+
+  const handleSearchReset = () => {
+    // Expand header when needed
+    setHeaderExpanded(true);
+  };
 
   return (
     <div className="layout">
       <ScrollToTop />
-      <Header />
+      <Header onSearchTrigger={handleSearchTrigger} />
       <main>
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>
@@ -87,7 +98,7 @@ function AnimatedRoutes() {
                   animate="animate"
                   exit="exit"
                 >
-                  <SearchProduct />
+                  <SearchProduct onSearchReset={handleSearchReset} />
                 </motion.div>
               }
             />
