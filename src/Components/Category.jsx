@@ -188,7 +188,7 @@ export default function Category() {
         Our Categories
         <div className="border-bottom border-3 border-primary w-25 mx-auto mt-2"></div>
       </h2>
-      <Row>
+      <Row xs={2} sm={2} md={3} lg={3}>
         {categories.map((category) => (
           <Col key={category.id} sm={6} lg={4} className="mb-4">
             <CategoryCard category={category} onClick={handleCategoryClick} />
