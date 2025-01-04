@@ -80,7 +80,7 @@ export default function SearchProduct() {
   // Render search results
   return (
     <Container className="py-5 mt-5">
-      <Row xs={1} md={3} className="g-4">
+      <Row xs={2} sm={2} md={3} lg={4} className="g-4">
         {products.map((product) => (
           <Col key={product.id}>
             <Card>
