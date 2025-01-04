@@ -4,14 +4,22 @@ import React, { useEffect, useState, useRef, useCallback } from "react";
 import { supabase } from "../DB/supabaseClient";
 import "./CSS/CategorySelected.css";
 
-const OptimizedImage = ({ src, alt, style }) => {
+const OptimizedImage = ({ src, alt, style, className }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [error, setError] = useState(false);
 
   return (
-    <div className="position-relative" style={style}>
+    <div
+      className="position-relative w-100 h-100"
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        ...style,
+      }}
+    >
       {!imageLoaded && !error && (
-        <div className="position-absolute top-50 start-50 translate-middle">
+        <div className="position-absolute">
           <Spinner animation="border" variant="secondary" size="sm" />
         </div>
       )}
@@ -23,12 +31,15 @@ const OptimizedImage = ({ src, alt, style }) => {
             : src
         }
         alt={alt}
-        className={`w-100 h-100 object-fit-cover transition-opacity ${
+        className={`${className} transition-opacity ${
           imageLoaded ? "opacity-100" : "opacity-0"
         }`}
         style={{
+          maxWidth: "100%",
+          maxHeight: "100%",
+          objectFit: "contain", // or 'cover' based on your preference
+          objectPosition: "center",
           transition: "opacity 0.3s",
-          objectFit: "cover",
           ...style,
         }}
         loading="lazy"
@@ -127,11 +138,14 @@ export default function CategorySelected() {
       {[...Array(4)].map((_, idx) => (
         <Col key={`skeleton-${idx}`}>
           <Card className="h-100 shadow-sm">
-            <div className="bg-light" style={{ height: "200px" }}>
+            <div
+              className="bg-light d-flex justify-content-center align-items-center"
+              style={{ height: "200px" }}
+            >
               <Spinner
                 animation="border"
                 variant="secondary"
-                className="position-absolute top-50 start-50 translate-middle"
+                className="position-absolute"
               />
             </div>
             <Card.Body>
@@ -162,18 +176,41 @@ export default function CategorySelected() {
 
             return (
               <Col key={product.id} ref={isLastProduct ? lastProductRef : null}>
-                <Card className="h-100 shadow-sm product-card">
-                  <OptimizedImage
-                    src={product.product_image}
-                    alt={product.product_name}
-                    style={{ height: "200px" }}
-                  />
-                  <Card.Body>
-                    <Card.Title>{product.product_name}</Card.Title>
+                <Card className="h-100 shadow-sm product-card d-flex flex-column">
+                  <div
+                    className="card-image-container d-flex justify-content-center align-items-center"
+                    style={{
+                      height: "200px",
+                      overflow: "hidden",
+                      backgroundColor: "#f8f9fa", // Optional light background
+                    }}
+                  >
+                    <OptimizedImage
+                      src={product.product_image}
+                      alt={product.product_name}
+                      className="w-100 h-100"
+                      style={{
+                        objectFit: "contain", // or 'cover'
+                      }}
+                    />
+                  </div>
+                  <Card.Body className="d-flex flex-column flex-grow-1">
+                    <Card.Title className="mb-2">
+                      {product.product_name}
+                    </Card.Title>
                     <Card.Text className="text-muted mb-2">
                       ${parseFloat(product.product_price).toFixed(2)}
                     </Card.Text>
-                    <Card.Text className="product-description">
+                    <Card.Text
+                      className="product-description flex-grow-1"
+                      style={{
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        display: "-webkit-box",
+                        WebkitLineClamp: 3,
+                        WebkitBoxOrient: "vertical",
+                      }}
+                    >
                       {product.product_description}
                     </Card.Text>
                   </Card.Body>

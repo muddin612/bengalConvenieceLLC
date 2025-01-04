@@ -3,6 +3,54 @@ import { Container, Row, Col, Card, Spinner, Alert } from "react-bootstrap";
 import { supabase } from "../DB/supabaseClient";
 import { useLocation } from "react-router-dom";
 
+const OptimizedImage = ({ src, alt, style, className }) => {
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [error, setError] = useState(false);
+
+  return (
+    <div
+      className="card-image-container position-relative"
+      style={{
+        height: "200px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        overflow: "hidden",
+        backgroundColor: "#f8f9fa", // Light background for consistency
+        ...style,
+      }}
+    >
+      {!imageLoaded && !error && (
+        <div className="position-absolute top-50 start-50 translate-middle">
+          <Spinner animation="border" variant="secondary" size="sm" />
+        </div>
+      )}
+
+      <img
+        src={
+          error
+            ? "/default-product-image.png"
+            : src || "/default-product-image.png"
+        }
+        alt={alt}
+        className={`${className} transition-opacity ${
+          imageLoaded ? "opacity-100" : "opacity-0"
+        }`}
+        style={{
+          width: "100%",
+          height: "100%",
+          objectFit: "contain", // or 'cover' depending on your preference
+          objectPosition: "center",
+          transition: "opacity 0.3s",
+        }}
+        loading="lazy"
+        onLoad={() => setImageLoaded(true)}
+        onError={() => setError(true)}
+      />
+    </div>
+  );
+};
+
 export default function SearchProduct() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -80,24 +128,37 @@ export default function SearchProduct() {
   // Render search results
   return (
     <Container className="py-5 mt-5">
+      <h2 className="mb-4">Search Results for "{searchTerm}"</h2>
       <Row xs={2} sm={2} md={3} lg={4} className="g-4">
         {products.map((product) => (
           <Col key={product.id}>
-            <Card>
-              <Card.Img
-                variant="top"
-                src={product.product_image || "/default-product-image.png"}
+            <Card className="h-100 shadow-sm d-flex flex-column">
+              <OptimizedImage
+                src={product.product_image}
                 alt={product.product_name}
-                style={{ height: "200px", objectFit: "cover" }}
+                className="card-img-top"
               />
-              <Card.Body>
-                <Card.Title>{product.product_name}</Card.Title>
-                <Card.Text>
+              <Card.Body className="d-flex flex-column flex-grow-1">
+                <Card.Title className="mb-2">{product.product_name}</Card.Title>
+                <Card.Text className="text-muted mb-2">
                   <strong>Category:</strong> {product.product_category}
-                  <br />
-                  <strong>Price:</strong> ${product.product_price}
                 </Card.Text>
-                <Card.Text>{product.product_description}</Card.Text>
+                <Card.Text className="mb-2">
+                  <strong>Price:</strong> $
+                  {parseFloat(product.product_price).toFixed(2)}
+                </Card.Text>
+                <Card.Text
+                  className="flex-grow-1"
+                  style={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    display: "-webkit-box",
+                    WebkitLineClamp: 3,
+                    WebkitBoxOrient: "vertical",
+                  }}
+                >
+                  {product.product_description}
+                </Card.Text>
               </Card.Body>
             </Card>
           </Col>
