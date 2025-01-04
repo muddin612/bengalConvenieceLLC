@@ -211,7 +211,7 @@ export default function CategorySelected() {
                         WebkitBoxOrient: "vertical",
                       }}
                     >
-                      {product.product_description}
+                      <small> {product.product_description} </small>
                     </Card.Text>
                   </Card.Body>
                 </Card>

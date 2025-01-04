@@ -157,7 +157,7 @@ export default function SearchProduct() {
                     WebkitBoxOrient: "vertical",
                   }}
                 >
-                  {product.product_description}
+                  <small> {product.product_description} </small>
                 </Card.Text>
               </Card.Body>
             </Card>
