@@ -32,7 +32,7 @@ export default function Home() {
             </Button>
             <Button
               variant="primary"
-              href="sms:8624021974"
+              href="sms:8624021248"
               className="px-4 py-2"
               size="lg"
             >
